@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Exhibitions | Jen Folsom</title>
+
+    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat%3A500%2C700%7CRoboto+Condensed:700%7CRoboto%3A700&display=swap" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="css/line-awesome.css">
+	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<link type="text/css" rel="stylesheet" href="css/responsive.css">
+
+	<!-- Icon -->
+	<link rel="icon" href="img/favicon.png" sizes="32x32" />
+</head>
+<body class="has-spotlight ashade-albums-template ashade-albums-template--carousel">
+    <!-- Header -->
+	<header id="ashade-header">
+        <div class="ashade-header-inner">
+            <div class="ashade-logo-block">
+                <a href="index.html" class="ashade-logo is-retina">
+                	<img src="img/logo.svg" alt="Jen Folsom" width="220" height="80">
+                </a>
+            </div>
+            <div class="ashade-nav-block">
+                <nav class="ashade-nav">
+                                        <ul class="main-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="menu-item-has-children">
+                            <a href="projects.html">Projects</a>
+                            <ul class="sub-menu">
+                                <li><a href="seeking-elysium.html">Seeking Elysium</a></li>
+                                <li><a href="last-place.html">the last place I call home</a></li>
+                                <li><a href="space-between.html">the space between</a></li>
+                                <li><a href="wanderings.html">Wanderings</a></li>
+                                <li><a href="amplified.html">Amplified</a></li>
+                                <li><a href="commissions.html">Commissions</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children">
+                            <a href="bio.html">Bio</a>
+                            <ul class="sub-menu">
+                                <li><a href="bio.html">Statement</a></li>
+                                <li><a href="cv.html">CV</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="exhibitions.html">Exhibitions</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li>
+                            <a href="#" class="ashade-aside-toggler">
+                                <span class="ashade-aside-toggler__icon01"></span>
+                                <span class="ashade-aside-toggler__icon02"></span>
+                                <span class="ashade-aside-toggler__icon03"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+	<!-- Exhibitions: data lives in exhibitions.json — edit that file to add/update shows -->
+	<div class="ashade-page-wrap" style="padding: 60px 40px 40px; max-width:900px; margin: 0 auto;">
+
+		<div id="exh-upcoming" style="margin-bottom:3em;">
+			<h3 style="font-size:.75em; letter-spacing:.2em; text-transform:uppercase; opacity:.5; margin-bottom:1.5em;">Upcoming</h3>
+			<div id="exh-upcoming-list"></div>
+		</div>
+
+		<div id="exh-current" style="margin-bottom:3em;">
+			<h3 style="font-size:.75em; letter-spacing:.2em; text-transform:uppercase; opacity:.5; margin-bottom:1.5em;">Current</h3>
+			<div id="exh-current-list"></div>
+		</div>
+
+		<div id="exh-past" style="margin-bottom:3em;">
+			<h3 style="font-size:.75em; letter-spacing:.2em; text-transform:uppercase; opacity:.5; margin-bottom:1.5em;">Past</h3>
+			<div id="exh-past-list"></div>
+		</div>
+
+	</div>
+
+	<style>
+		.exh-item {
+			display: flex;
+			gap: 2em;
+			border-top: 1px solid rgba(255,255,255,.1);
+			padding: 1.5em 0;
+			align-items: flex-start;
+		}
+		.exh-item__meta { flex: 1; }
+		.exh-item__title { font-size: 1.1em; font-weight: 500; margin: 0 0 .3em; }
+		.exh-item__venue { opacity: .65; font-size: .85em; margin: 0 0 .2em; }
+		.exh-item__dates { opacity: .45; font-size: .8em; letter-spacing: .05em; }
+		.exh-item__type  { display: inline-block; font-size:.7em; letter-spacing:.1em;
+		                   text-transform:uppercase; border: 1px solid rgba(255,255,255,.25);
+		                   padding: .2em .6em; margin-top: .6em; opacity: .6; }
+		#exh-current-list .exh-item__title { color: #fff; opacity: 1; }
+		.exh-empty { opacity: .3; font-size: .85em; padding: .5em 0; }
+	</style>
+
+	<script>
+	(function() {
+		function renderList(items, containerId) {
+			var el = document.getElementById(containerId);
+			if (!el) return;
+			if (!items || items.length === 0) {
+				el.innerHTML = '<p class="exh-empty">None at this time.</p>';
+				return;
+			}
+			el.innerHTML = items.map(function(x) {
+				return '<div class="exh-item">' +
+					'<div class="exh-item__meta">' +
+					'<p class="exh-item__title">' + x.title + '</p>' +
+					'<p class="exh-item__venue">' + x.venue + ' &mdash; ' + x.location + '</p>' +
+					'<p class="exh-item__dates">' + x.dates + '</p>' +
+					'<span class="exh-item__type">' + x.type + '</span>' +
+					'</div>' +
+					'</div>';
+			}).join('');
+		}
+
+		fetch('exhibitions.json')
+			.then(function(r){ return r.json(); })
+			.then(function(data) {
+				renderList(data.upcoming, 'exh-upcoming-list');
+				renderList(data.current,  'exh-current-list');
+				renderList(data.past,     'exh-past-list');
+				if (!data.current || data.current.length === 0) {
+					document.getElementById('exh-current').style.display = 'none';
+				}
+			})
+			.catch(function(){ console.warn('Could not load exhibitions.json'); });
+	})();
+	</script>
+    
+	<!-- Footer -->
+	<footer id="ashade-footer">
+		<div class="ashade-footer-inner">
+			<div class="ashade-footer__socials">
+				<ul class="ashade-socials">
+					<li><a href="#">Fb</a></li>
+					<li><a href="#">Tw</a></li>
+					<li><a href="#">In</a></li>
+					<li><a href="#">Yt</a></li>
+				</ul>
+			</div>
+			<div class="ashade-footer__copyright">
+				Copyright &copy; Jen Folsom. All Rights Reserved.
+			</div>
+		</div>
+	</footer>
+
+    <!-- Aside Bar -->
+    <aside id="ashade-aside">
+       	<a href="#" class="ashade-aside-close">Close</a>
+        <div class="ashade-aside-inner">
+        	<div class="ashade-aside-content">
+				<div class="ashade-widget ashade-widget--about">
+					<div class="ashade-widget--about__head">
+						<img src="img/general/owner-avatar.png" alt="Jen Folsom">
+						<h5>
+							<span>Fine Art Photographer</span>
+							Jen Folsom
+						</h5>
+					</div>
+					<p>Jen Folsom is a fine art photographer whose work explores memory, place, and the space between presence and absence.</p>
+					<p class="align-right">
+						<a href="bio.html" class="ashade-learn-more">Bio</a>
+					</p>
+				</div><!-- .ashade-widget -->
+
+				<div class="ashade-widget ashade-widget--contacts">
+					<h5 class="ashade-widget-title">
+						<span>Get in touch</span>
+						Contact
+					</h5>
+					<ul class="ashade-contact-details__list">
+						<li>
+							<i class="ashade-contact-icon la la-map-marker"></i>
+							Nice, France
+						</li>
+						<li>
+							<i class="ashade-contact-icon la la-phone"></i>
+							<a href="tel:+33672051718">+33 06 72 05 17 18</a>
+						</li>
+						<li>
+							<i class="ashade-contact-icon la la-phone"></i>
+							<a href="tel:+19702273692">+1 (970) 227-3692</a>
+						</li>
+						<li>
+							<i class="ashade-contact-icon la la-envelope"></i>
+							<a href="mailto:hello@jenfolsom.com">hello@jenfolsom.com</a>
+						</li>
+					</ul>
+					<p class="align-right">
+						<a href="contact.html" class="ashade-learn-more">Get in touch</a>
+					</p>
+				</div><!-- .ashade-widget -->
+
+        	</div><!-- .ashade-aside-content -->
+        </div><!-- .ashade-aside-inner -->
+    </aside>
+
+    <!-- UI Elements -->
+    <div class="ashade-menu-overlay"></div>
+    <div class="ashade-aside-overlay"></div>
+    <div class="ashade-cursor is-inactive">
+    	<span class="ashade-cursor-circle"></span>
+    	<span class="ashade-cursor-slider"></span>
+    	<span class="ashade-cursor-close ashade-cursor-label">Close</span>
+    	<span class="ashade-cursor-zoom ashade-cursor-label">Zoom</span>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/ashade-ribbon.js"></script>
+</body>
+</html>

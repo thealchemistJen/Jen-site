@@ -1,0 +1,23 @@
+{
+  "upcoming": [
+    {
+      "title": "Exhibition Title",
+      "venue": "Gallery Name",
+      "location": "City, State",
+      "dates": "Month DD – Month DD, YYYY",
+      "type": "Solo",
+      "cover": "img/albums/carousel/album01.png"
+    }
+  ],
+  "current": [],
+  "past": [
+    {
+      "title": "Exhibition Title",
+      "venue": "Gallery Name",
+      "location": "City, State",
+      "dates": "Month DD – Month DD, YYYY",
+      "type": "Group",
+      "cover": "img/albums/carousel/album02.png"
+    }
+  ]
+}
