@@ -15,7 +15,7 @@
 	<!-- Icon -->
 	<link rel="icon" href="img/favicon.png" sizes="32x32" />
 </head>
-<body class="has-spotlight ashade-albums-template ashade-albums-template--carousel">
+<body class="has-spotlight ashade-smooth-scroll ashade-albums-template ashade-albums-template--carousel jf-projects-page">
     <!-- Header -->
 	<header id="ashade-header">
         <div class="ashade-header-inner">
@@ -236,5 +236,23 @@
     <script src="js/gsap.min.js"></script>
     <script src="js/core.js"></script>
     <script src="js/ashade-ribbon.js"></script>
+
+	<script>
+	/* Fix nav links on projects page — prevent ribbon JS from blocking them */
+	document.addEventListener('DOMContentLoaded', function() {
+		var navLinks = document.querySelectorAll('#ashade-header a');
+		navLinks.forEach(function(link) {
+			link.addEventListener('mousedown', function(e) {
+				e.stopPropagation();
+			});
+			link.addEventListener('click', function(e) {
+				e.stopPropagation();
+				if (this.href && this.href !== '#') {
+					window.location.href = this.href;
+				}
+			});
+		});
+	});
+	</script>
 </body>
 </html>
